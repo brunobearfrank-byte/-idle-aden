@@ -1,455 +1,75 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-  <meta name="theme-color" content="#15100a" />
-  <title>放置亞丁</title>
-  <style>
-
-:root {
-  color-scheme: dark;
-  --bg:#0d0a07;
-  --panel:#1b1510;
-  --line:#473725;
-  --gold:#e7bd63;
-  --text:#f3eadb;
-  --muted:#b9aa94;
-  --green:#5ecf78;
-  --red:#d95757;
-  --blue:#5aa5ff;
-}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:radial-gradient(circle at top,#2a1b0e,#0d0a07 45%);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;color:var(--text)}
-button{font:inherit}
-.app{max-width:520px;margin:auto;padding:calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 24px)}
-header{display:flex;justify-content:space-between;align-items:center;padding:8px 4px}
-h1{margin:0;color:var(--gold);font-size:28px}
-header p{margin:2px 0 0;color:var(--muted)}
-.currency{display:flex;flex-direction:column;text-align:right;font-size:14px;gap:4px}
-.currency b{color:var(--gold)}
-.panel{background:linear-gradient(180deg,#211910,#17110c);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 8px 24px #0007}
-.hero,.enemy{display:flex;gap:12px;align-items:center}
-.avatar,.enemy-icon{width:72px;height:72px;border-radius:16px;display:grid;place-items:center;font-size:38px;background:#302214;border:1px solid #5d452a}
-.hero-info,.enemy-info{flex:1}
-.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.bar{height:12px;background:#0b0806;border-radius:999px;overflow:hidden;border:1px solid #000;margin:3px 0}
-.bar>div{height:100%;width:100%;transition:width .2s}
-.hp{background:linear-gradient(90deg,#b72d2d,#ef6262)}
-.exp{background:linear-gradient(90deg,#286dbd,#62b4ff)}
-.enemyhp{background:linear-gradient(90deg,#8c2222,#df4b4b)}
-small{color:var(--muted)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.stats span{background:#110d09;padding:8px;border-radius:8px;text-align:center;font-size:13px}
-.battle-panel{min-height:172px}
-.battle-log{margin-top:12px;background:#0e0b08;padding:10px;border-radius:8px;color:#d7c8b0;min-height:42px;font-size:14px}
-.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-button{border:1px solid #6d512f;background:linear-gradient(#3b2b19,#24190f);color:var(--text);border-radius:10px;padding:11px 8px;font-weight:700}
-button:active{transform:scale(.98)}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0}
-.tabs button{padding:10px 4px}
-.tabs button.active{color:#1a1107;background:var(--gold);border-color:#f7db91}
-.tab{display:none}
-.tab.active{display:block}
-.equip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.slot{min-height:68px}
-.inventory{display:grid;gap:6px}
-.item{display:flex;justify-content:space-between;align-items:center;background:#110d09;padding:8px;border-radius:8px;border:1px solid #332719}
-.item button{padding:6px 10px}
-.skill-card{display:flex;justify-content:space-between;background:#110d09;padding:12px;border-radius:9px;margin-bottom:8px}
-.locked{opacity:.45}
-.tab-content h3{margin-top:2px;color:var(--gold)}
-.tab-content>div>button{width:100%;margin-bottom:8px}
-footer{text-align:center;color:#8e806d;font-size:12px;padding:6px}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#000d;color:white;padding:10px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap}
-.toast.show{opacity:1}
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#17110b">
+<title>天堂放置版 v0.1</title>
+<style>
+:root{color-scheme:dark;--gold:#e4bb63;--line:#4a3824;--muted:#b6a58d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#302012,#0b0805 48%);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;color:#f4ead9}
+.app{max-width:520px;margin:auto;padding:calc(env(safe-area-inset-top) + 8px) 10px 24px}
+header{display:flex;justify-content:space-between;align-items:center;padding:8px 2px}h1{font-size:24px;margin:0;color:var(--gold)}
+.panel{background:linear-gradient(#211810,#17110c);border:1px solid var(--line);border-radius:13px;padding:12px;margin-bottom:10px;box-shadow:0 8px 22px #0007}
+.row,.tabs,.actions{display:grid;gap:7px}.row{grid-template-columns:1fr 1fr}.tabs,.actions{grid-template-columns:repeat(4,1fr)}
+button,select{font:inherit;border:1px solid #6a4f2e;background:linear-gradient(#3b2a19,#24180f);color:#f4ead9;border-radius:9px;padding:10px 5px;font-weight:700}
+button.active{background:var(--gold);color:#21160a}
+.battle{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:#100c08;border:1px solid #3a2b1d;border-radius:10px;padding:10px}
+.portrait{height:110px;display:grid;place-items:center;font-size:58px;background:#17110b;border-radius:9px;border:1px solid #45331f}
+.titleline{display:flex;justify-content:space-between;margin-bottom:7px}.bar{height:11px;background:#080604;border-radius:999px;overflow:hidden;border:1px solid #000;margin:4px 0}.bar>div{height:100%;transition:.2s}
+.hp{background:linear-gradient(90deg,#a82727,#e95a5a)}.mp{background:linear-gradient(90deg,#225eaa,#5ca5ef)}.exp{background:linear-gradient(90deg,#9a7a28,#e7c967)}
+small{color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px}.stats div{background:#100c08;padding:7px 3px;text-align:center;border-radius:7px;font-size:12px}
+.log{height:72px;overflow:auto;background:#0e0a07;border-radius:8px;padding:8px;font-size:12px;line-height:1.5;color:#d6c6ae}
+.tab{display:none}.tab.active{display:block}.equip{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.inventory{display:grid;gap:6px}.item{display:flex;justify-content:space-between;align-items:center;background:#100c08;border:1px solid #332619;border-radius:8px;padding:8px}
+.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:#000e;padding:10px 14px;border-radius:999px;opacity:0;transition:.2s;white-space:nowrap}.toast.show{opacity:1}
 </style>
 </head>
 <body>
-  <main class="app">
-    <header>
-      <div>
-        <h1>放置亞丁</h1>
-        <p id="mapName">說話之島</p>
-      </div>
-      <div class="currency">
-        <span>金幣 <b id="gold">0</b></span>
-        <span>鑽石 <b id="gems">0</b></span>
-      </div>
-    </header>
-
-    <section class="panel hero-panel">
-      <div class="hero">
-        <div class="avatar">⚔️</div>
-        <div class="hero-info">
-          <div class="row"><strong id="heroName">凌雲飛</strong><span>Lv.<b id="level">1</b></span></div>
-          <div class="bar"><div id="hpBar" class="hp"></div></div>
-          <small>HP <span id="hpText">100 / 100</span></small>
-          <div class="bar"><div id="expBar" class="exp"></div></div>
-          <small>EXP <span id="expText">0 / 100</span></small>
-        </div>
-      </div>
-      <div class="stats">
-        <span>攻擊 <b id="atk">10</b></span>
-        <span>防禦 <b id="def">2</b></span>
-        <span>攻速 <b id="aspd">1.0</b></span>
-      </div>
-    </section>
-
-    <section class="panel battle-panel">
-      <div class="enemy">
-        <div class="enemy-icon" id="enemyIcon">🟢</div>
-        <div class="enemy-info">
-          <div class="row"><strong id="enemyName">史萊姆</strong><span>Lv.<b id="enemyLevel">1</b></span></div>
-          <div class="bar"><div id="enemyHpBar" class="enemyhp"></div></div>
-          <small>HP <span id="enemyHpText">30 / 30</span></small>
-        </div>
-      </div>
-      <div id="battleLog" class="battle-log">開始自動戰鬥！</div>
-    </section>
-
-    <section class="panel actions">
-      <button id="bossBtn">挑戰 Boss</button>
-      <button id="mapBtn">切換地圖</button>
-      <button id="healBtn">使用藥水</button>
-    </section>
-
-    <nav class="tabs">
-      <button data-tab="equip" class="active">裝備</button>
-      <button data-tab="upgrade">強化</button>
-      <button data-tab="skills">技能</button>
-      <button data-tab="shop">商店</button>
-    </nav>
-
-    <section class="panel tab-content">
-      <div id="equip" class="tab active">
-        <div class="equip-grid">
-          <button class="slot" data-slot="weapon">武器<br><b id="weaponName">木劍 +0</b></button>
-          <button class="slot" data-slot="armor">盔甲<br><b id="armorName">布衣 +0</b></button>
-          <button class="slot" data-slot="ring">戒指<br><b id="ringName">無</b></button>
-        </div>
-        <h3>背包</h3>
-        <div id="inventory" class="inventory"></div>
-      </div>
-
-      <div id="upgrade" class="tab">
-        <h3>裝備強化</h3>
-        <p>消耗金幣提升裝備能力，失敗不會爆裝。</p>
-        <button id="upgradeWeapon">強化武器</button>
-        <button id="upgradeArmor">強化盔甲</button>
-      </div>
-
-      <div id="skills" class="tab">
-        <h3>自動技能</h3>
-        <div class="skill-card">
-          <b>重擊</b><span>每 5 秒造成 180% 傷害</span>
-        </div>
-        <div class="skill-card locked">
-          <b>劍氣</b><span>Lv.10 解鎖</span>
-        </div>
-        <div class="skill-card locked">
-          <b>狂暴</b><span>Lv.20 解鎖</span>
-        </div>
-      </div>
-
-      <div id="shop" class="tab">
-        <h3>雜貨商店</h3>
-        <button id="buyPotion">購買藥水（50 金幣）</button>
-        <p>藥水：<b id="potions">3</b></p>
-      </div>
-    </section>
-
-    <footer>遊戲會自動存檔；關閉後仍可獲得離線收益。</footer>
-  </main>
-
-  <div id="toast" class="toast"></div>
-  <script>
-
-const SAVE_KEY = "idleAdenSaveV1";
-
-const maps = [
-  {name:"說話之島", minLv:1, enemies:[
-    {name:"史萊姆", icon:"🟢", hp:30, atk:3, exp:18, gold:[8,15]},
-    {name:"哥布林", icon:"👺", hp:48, atk:5, exp:28, gold:[12,22]},
-    {name:"野狼", icon:"🐺", hp:65, atk:7, exp:40, gold:[15,28]}
-  ], boss:{name:"哥布林王",icon:"👹",hp:420,atk:18,exp:250,gold:[180,260]}},
-  {name:"古魯丁平原", minLv:8, enemies:[
-    {name:"半獸人", icon:"🪓", hp:120, atk:12, exp:75, gold:[30,50]},
-    {name:"骷髏兵", icon:"💀", hp:145, atk:14, exp:90, gold:[35,58]},
-    {name:"黑暗精靈", icon:"🧝", hp:175, atk:17, exp:110, gold:[42,70]}
-  ], boss:{name:"骷髏騎士",icon:"☠️",hp:1300,atk:38,exp:700,gold:[500,780]}},
-  {name:"龍之谷入口", minLv:18, enemies:[
-    {name:"蜥蜴人", icon:"🦎", hp:340, atk:28, exp:210, gold:[85,130]},
-    {name:"食人妖", icon:"👾", hp:420, atk:34, exp:260, gold:[100,155]},
-    {name:"幼龍", icon:"🐉", hp:520, atk:42, exp:330, gold:[120,190]}
-  ], boss:{name:"赤焰飛龍",icon:"🐲",hp:4200,atk:85,exp:2500,gold:[1800,2600]}}
-];
-
-const gearPool = {
-  weapon:[
-    {name:"鐵劍",atk:5,rarity:"普通"},
-    {name:"銀騎士之劍",atk:12,rarity:"稀有"},
-    {name:"赤焰長劍",atk:28,rarity:"史詩"}
-  ],
-  armor:[
-    {name:"皮甲",def:3,rarity:"普通"},
-    {name:"精靈鎖甲",def:8,rarity:"稀有"},
-    {name:"龍鱗甲",def:18,rarity:"史詩"}
-  ],
-  ring:[
-    {name:"力量戒指",atk:3,def:1,rarity:"普通"},
-    {name:"勇者戒指",atk:7,def:3,rarity:"稀有"}
-  ]
-};
-
-let state = {
-  name:"凌雲飛", level:1, exp:0, expNeed:100,
-  hp:100, maxHp:100, baseAtk:10, baseDef:2, attackSpeed:1,
-  gold:100, gems:0, potions:3, map:0,
-  equipment:{
-    weapon:{name:"木劍",atk:1,level:0},
-    armor:{name:"布衣",def:1,level:0},
-    ring:null
-  },
-  inventory:[],
-  enemy:null, bossMode:false, lastSeen:Date.now()
-};
-
-const $ = id => document.getElementById(id);
-const rand = (a,b)=>Math.floor(Math.random()*(b-a+1))+a;
-
-function totalAtk(){
-  const w=state.equipment.weapon?.atk||0;
-  const r=state.equipment.ring?.atk||0;
-  return state.baseAtk+w+r+(state.equipment.weapon?.level||0)*2;
-}
-function totalDef(){
-  const a=state.equipment.armor?.def||0;
-  const r=state.equipment.ring?.def||0;
-  return state.baseDef+a+r+(state.equipment.armor?.level||0)*2;
-}
-function spawnEnemy(){
-  const m=maps[state.map];
-  const base = state.bossMode ? m.boss : m.enemies[rand(0,m.enemies.length-1)];
-  const scale = 1 + Math.max(0,state.level-m.minLv)*0.08;
-  state.enemy = {
-    ...base,
-    level: state.bossMode ? Math.max(m.minLv+4,state.level) : Math.max(m.minLv,state.level-1),
-    maxHp: Math.floor(base.hp*scale),
-    hp: Math.floor(base.hp*scale),
-    atk: Math.floor(base.atk*scale),
-    exp: Math.floor(base.exp*scale)
-  };
-  render();
-}
-function heroAttack(mult=1){
-  if(!state.enemy) return;
-  const crit = Math.random()<0.12;
-  let dmg=Math.max(1,Math.floor(totalAtk()*mult*(0.85+Math.random()*0.3)));
-  if(crit) dmg*=2;
-  state.enemy.hp-=dmg;
-  log(`${crit?"暴擊！":""}你造成 ${dmg} 傷害`);
-  if(state.enemy.hp<=0) winBattle();
-}
-function enemyAttack(){
-  if(!state.enemy || state.enemy.hp<=0) return;
-  const dmg=Math.max(1,Math.floor(state.enemy.atk-totalDef()*0.55));
-  state.hp-=dmg;
-  log(`${state.enemy.name} 對你造成 ${dmg} 傷害`);
-  if(state.hp<=0){
-    state.hp=state.maxHp;
-    state.gold=Math.floor(state.gold*0.95);
-    state.bossMode=false;
-    log("你被擊敗，損失 5% 金幣並回到安全區。");
-    spawnEnemy();
-  }
-}
-function winBattle(){
-  const e=state.enemy;
-  const g=rand(e.gold[0],e.gold[1]);
-  state.gold+=g;
-  gainExp(e.exp);
-  log(`擊敗 ${e.name}，獲得 ${e.exp} EXP、${g} 金幣`);
-  if(state.bossMode){
-    state.gems+=5;
-    state.bossMode=false;
-    dropGear(true);
-  } else if(Math.random()<0.13) {
-    dropGear(false);
-  }
-  state.hp=Math.min(state.maxHp,state.hp+Math.floor(state.maxHp*0.08));
-  spawnEnemy();
-}
-function gainExp(v){
-  state.exp+=v;
-  while(state.exp>=state.expNeed){
-    state.exp-=state.expNeed;
-    state.level++;
-    state.expNeed=Math.floor(state.expNeed*1.28);
-    state.maxHp+=20;
-    state.hp=state.maxHp;
-    state.baseAtk+=3;
-    state.baseDef+=1;
-    toast(`升級！目前 Lv.${state.level}`);
-  }
-}
-function dropGear(boss){
-  const slots=["weapon","armor","ring"];
-  const slot=slots[rand(0,slots.length-1)];
-  const pool=gearPool[slot];
-  let idx=0;
-  const roll=Math.random();
-  if(boss && roll<0.25) idx=Math.min(2,pool.length-1);
-  else if(roll<0.35) idx=Math.min(1,pool.length-1);
-  const item={...pool[idx],slot,id:Date.now()+Math.random()};
-  state.inventory.push(item);
-  toast(`獲得 ${item.rarity}裝備：${item.name}`);
-}
-function equipItem(id){
-  const idx=state.inventory.findIndex(x=>x.id==id);
-  if(idx<0)return;
-  const item=state.inventory[idx];
-  const old=state.equipment[item.slot];
-  state.equipment[item.slot]={...item,level:old?.level||0};
-  state.inventory.splice(idx,1);
-  if(old && !["木劍","布衣"].includes(old.name)) state.inventory.push({...old,id:Date.now()+Math.random()});
-  render();
-  save();
-}
-function upgrade(slot){
-  const item=state.equipment[slot];
-  const cost=100*Math.pow(item.level+1,2);
-  if(state.gold<cost){toast("金幣不足");return}
-  state.gold-=cost;
-  item.level++;
-  toast(`${item.name} 強化成功 +${item.level}`);
-  render(); save();
-}
-function usePotion(){
-  if(state.potions<=0){toast("沒有藥水");return}
-  if(state.hp>=state.maxHp){toast("目前不需要補血");return}
-  state.potions--;
-  state.hp=Math.min(state.maxHp,state.hp+Math.floor(state.maxHp*0.5));
-  toast("恢復 50% HP");
-  render();
-}
-function nextMap(){
-  const next=(state.map+1)%maps.length;
-  if(state.level<maps[next].minLv){toast(`需要 Lv.${maps[next].minLv}`);return}
-  state.map=next;
-  state.bossMode=false;
-  spawnEnemy();
-  save();
-}
-function challengeBoss(){
-  state.bossMode=true;
-  spawnEnemy();
-  toast("Boss 出現！");
-}
-function buyPotion(){
-  if(state.gold<50){toast("金幣不足");return}
-  state.gold-=50; state.potions++; render(); save();
-}
-function offlineReward(){
-  const now=Date.now();
-  const sec=Math.min(8*3600,Math.max(0,(now-(state.lastSeen||now))/1000));
-  if(sec<60)return;
-  const kills=Math.floor(sec/5);
-  const m=maps[state.map], avg=m.enemies[1]||m.enemies[0];
-  const gold=kills*Math.floor((avg.gold[0]+avg.gold[1])/2);
-  const exp=kills*avg.exp;
-  state.gold+=gold;
-  gainExp(exp);
-  setTimeout(()=>toast(`離線收益：${gold} 金幣、${exp} EXP`),600);
-}
-function save(){
-  state.lastSeen=Date.now();
-  localStorage.setItem(SAVE_KEY,JSON.stringify(state));
-}
-function load(){
-  const raw=localStorage.getItem(SAVE_KEY);
-  if(raw){
-    try{ state={...state,...JSON.parse(raw)}; }catch(e){}
-  }
-  offlineReward();
-  spawnEnemy();
-}
-function log(t){ $("battleLog").textContent=t; render(); }
-function toast(t){
-  const el=$("toast"); el.textContent=t; el.classList.add("show");
-  clearTimeout(window.__toast); window.__toast=setTimeout(()=>el.classList.remove("show"),1800);
-}
-function render(){
-  $("mapName").textContent=maps[state.map].name;
-  $("gold").textContent=Math.floor(state.gold).toLocaleString();
-  $("gems").textContent=state.gems;
-  $("heroName").textContent=state.name;
-  $("level").textContent=state.level;
-  $("hpText").textContent=`${Math.max(0,Math.floor(state.hp))} / ${state.maxHp}`;
-  $("hpBar").style.width=`${Math.max(0,state.hp/state.maxHp*100)}%`;
-  $("expText").textContent=`${Math.floor(state.exp)} / ${state.expNeed}`;
-  $("expBar").style.width=`${state.exp/state.expNeed*100}%`;
-  $("atk").textContent=totalAtk();
-  $("def").textContent=totalDef();
-  $("aspd").textContent=state.attackSpeed.toFixed(1);
-
-  if(state.enemy){
-    $("enemyIcon").textContent=state.enemy.icon;
-    $("enemyName").textContent=state.enemy.name;
-    $("enemyLevel").textContent=state.enemy.level;
-    $("enemyHpText").textContent=`${Math.max(0,state.enemy.hp)} / ${state.enemy.maxHp}`;
-    $("enemyHpBar").style.width=`${Math.max(0,state.enemy.hp/state.enemy.maxHp*100)}%`;
-  }
-
-  const w=state.equipment.weapon, a=state.equipment.armor, r=state.equipment.ring;
-  $("weaponName").textContent=`${w.name} +${w.level||0}`;
-  $("armorName").textContent=`${a.name} +${a.level||0}`;
-  $("ringName").textContent=r?`${r.name} +${r.level||0}`:"無";
-  $("potions").textContent=state.potions;
-  $("upgradeWeapon").textContent=`強化武器（${100*Math.pow((w.level||0)+1,2)} 金幣）`;
-  $("upgradeArmor").textContent=`強化盔甲（${100*Math.pow((a.level||0)+1,2)} 金幣）`;
-
-  const inv=$("inventory");
-  inv.innerHTML=state.inventory.length?"":"<small>目前沒有裝備</small>";
-  state.inventory.forEach(i=>{
-    const div=document.createElement("div");
-    div.className="item";
-    const stat=i.atk?`攻擊 +${i.atk}`:`防禦 +${i.def||0}`;
-    div.innerHTML=`<span><b>${i.name}</b><br><small>${i.rarity}・${stat}</small></span><button>裝備</button>`;
-    div.querySelector("button").onclick=()=>equipItem(i.id);
-    inv.appendChild(div);
-  });
-}
-
-document.querySelectorAll(".tabs button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));
-    btn.classList.add("active");
-    $(btn.dataset.tab).classList.add("active");
-  };
-});
-$("bossBtn").onclick=challengeBoss;
-$("mapBtn").onclick=nextMap;
-$("healBtn").onclick=usePotion;
-$("upgradeWeapon").onclick=()=>upgrade("weapon");
-$("upgradeArmor").onclick=()=>upgrade("armor");
-$("buyPotion").onclick=buyPotion;
-
-load();
-
-let attackTick=0, skillTick=0, enemyTick=0;
-setInterval(()=>{
-  attackTick+=0.25; skillTick+=0.25; enemyTick+=0.25;
-  if(attackTick>=1/state.attackSpeed){ heroAttack(); attackTick=0; }
-  if(skillTick>=5){ heroAttack(1.8); skillTick=0; }
-  if(enemyTick>=1.5){ enemyAttack(); enemyTick=0; }
-  render();
-},250);
-setInterval(save,5000);
-window.addEventListener("beforeunload",save);
-document.addEventListener("visibilitychange",()=>{ if(document.hidden) save(); });
-
-</script>
-</body>
-</html>
+<div class="app">
+<header><div><h1>天堂放置版</h1><small>v0.1</small></div><div>金幣 <b id="gold">0</b><br>鑽石 <b id="gems">0</b></div></header>
+<section class="panel row"><select id="classSelect"><option value="knight">騎士</option><option value="elf">妖精</option><option value="mage">法師</option></select><select id="mapSelect"></select></section>
+<section class="panel battle">
+<div class="card"><div class="titleline"><b id="heroName"></b><span>Lv.<b id="level"></b></span></div><div class="portrait" id="heroPortrait">🧑‍⚔️</div><div class="bar"><div class="hp" id="hpBar"></div></div><small>HP <span id="hpText"></span></small><div class="bar"><div class="mp" id="mpBar"></div></div><small>MP <span id="mpText"></span></small></div>
+<div class="card"><div class="titleline"><b id="enemyName"></b><span>Lv.<b id="enemyLevel"></b></span></div><div class="portrait" id="enemyPortrait">🟢</div><div class="bar"><div class="hp" id="enemyHpBar"></div></div><small>HP <span id="enemyHpText"></span></small><div style="height:22px"></div><button id="bossBtn" style="width:100%">挑戰 Boss</button></div>
+</section>
+<section class="panel"><div class="bar"><div class="exp" id="expBar"></div></div><small>EXP <span id="expText"></span></small><div class="stats"><div>攻擊<br><b id="atk"></b></div><div>防禦<br><b id="def"></b></div><div>命中<br><b id="hit"></b></div><div>攻速<br><b id="aspd"></b></div></div></section>
+<section class="panel"><div class="log" id="log">開始自動戰鬥。</div></section>
+<nav class="tabs"><button class="active" data-tab="equip">裝備</button><button data-tab="bag">背包</button><button data-tab="skills">技能</button><button data-tab="shop">商店</button></nav>
+<section class="panel">
+<div id="equip" class="tab active"><div class="equip"><button>武器<br><b id="weaponName"></b></button><button>盔甲<br><b id="armorName"></b></button><button>飾品<br><b id="ringName"></b></button></div><div style="height:8px"></div><div class="actions"><button id="upWeapon">強化武器</button><button id="upArmor">強化盔甲</button><button id="healBtn">喝藥水</button><button id="saveBtn">存檔</button></div></div>
+<div id="bag" class="tab"><div id="inventory" class="inventory"></div></div>
+<div id="skills" class="tab"><p>重擊：每 5 秒造成 180% 傷害</p><p>自動喝水：HP 低於 35%</p></div>
+<div id="shop" class="tab"><button id="buyPotion" style="width:100%">購買紅色藥水（50 金幣）</button><p>紅色藥水：<b id="potions"></b></p></div>
+</section>
+</div><div id="toast" class="toast"></div>
+<script>
+const KEY="idleLineageV01";
+const classes={knight:{name:"騎士",icon:"🧑‍⚔️",hp:140,mp:30,atk:12,def:5,hit:8,aspd:1.05},elf:{name:"妖精",icon:"🧝",hp:105,mp:55,atk:10,def:3,hit:12,aspd:1.25},mage:{name:"法師",icon:"🧙",hp:85,mp:100,atk:14,def:2,hit:9,aspd:.9}};
+const maps=[{name:"說話之島",lv:1,enemies:[{n:"史萊姆",i:"🟢",hp:35,atk:4,exp:20,g:[8,15]},{n:"哥布林",i:"👺",hp:55,atk:6,exp:32,g:[12,22]},{n:"野狼",i:"🐺",hp:72,atk:8,exp:42,g:[16,28]}],boss:{n:"哥布林王",i:"👹",hp:500,atk:20,exp:280,g:[180,260]}},{name:"古魯丁平原",lv:8,enemies:[{n:"半獸人",i:"🪓",hp:130,atk:14,exp:82,g:[30,50]},{n:"骷髏兵",i:"💀",hp:160,atk:17,exp:100,g:[36,60]}],boss:{n:"骷髏騎士",i:"☠️",hp:1500,atk:42,exp:800,g:[520,780]}},{name:"龍之谷",lv:18,enemies:[{n:"蜥蜴人",i:"🦎",hp:360,atk:30,exp:220,g:[90,135]},{n:"幼龍",i:"🐉",hp:560,atk:45,exp:350,g:[130,200]}],boss:{n:"赤焰飛龍",i:"🐲",hp:4500,atk:90,exp:2700,g:[1900,2800]}}];
+const loot={weapon:[{name:"鐵劍",atk:5,r:"普通"},{name:"銀騎士之劍",atk:12,r:"稀有"}],armor:[{name:"皮甲",def:3,r:"普通"},{name:"精靈鎖甲",def:8,r:"稀有"}],ring:[{name:"力量戒指",atk:3,def:1,r:"普通"},{name:"勇者戒指",atk:7,def:3,r:"稀有"}]};
+let s={class:"knight",level:1,exp:0,expNeed:100,gold:100,gems:0,potions:5,map:0,hp:140,maxHp:140,mp:30,maxMp:30,baseAtk:12,baseDef:5,hit:8,aspd:1.05,equipment:{weapon:{name:"木劍",atk:1,level:0},armor:{name:"布衣",def:1,level:0},ring:null},inventory:[],enemy:null,boss:false,lastSeen:Date.now()};
+const $=x=>document.getElementById(x),rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function totalAtk(){return s.baseAtk+(s.equipment.weapon?.atk||0)+(s.equipment.ring?.atk||0)+(s.equipment.weapon?.level||0)*2}
+function totalDef(){return s.baseDef+(s.equipment.armor?.def||0)+(s.equipment.ring?.def||0)+(s.equipment.armor?.level||0)*2}
+function spawn(){const m=maps[s.map],b=s.boss?m.boss:m.enemies[rand(0,m.enemies.length-1)],scale=1+Math.max(0,s.level-m.lv)*.08;s.enemy={...b,maxHp:Math.floor(b.hp*scale),hp:Math.floor(b.hp*scale),atk:Math.floor(b.atk*scale),level:Math.max(m.lv,s.level-1)};render()}
+function log(t){$("log").innerHTML=t+"<br>"+$("log").innerHTML}
+function toast(t){const x=$("toast");x.textContent=t;x.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>x.classList.remove("show"),1600)}
+function gain(v){s.exp+=v;while(s.exp>=s.expNeed){s.exp-=s.expNeed;s.level++;s.expNeed=Math.floor(s.expNeed*1.28);s.maxHp+=18;s.maxMp+=8;s.baseAtk+=3;s.baseDef++;s.hp=s.maxHp;s.mp=s.maxMp;toast("升級！Lv."+s.level)}}
+function drop(boss){const slots=["weapon","armor","ring"],slot=slots[rand(0,2)],pool=loot[slot],idx=(boss||Math.random()<.3)?Math.min(1,pool.length-1):0,item={...pool[idx],slot,id:Date.now()+Math.random()};s.inventory.push(item);toast("獲得 "+item.r+"裝備："+item.name)}
+function win(){const e=s.enemy,g=rand(e.g[0],e.g[1]);s.gold+=g;gain(e.exp);log("擊敗 "+e.n+"，獲得 "+e.exp+" EXP、"+g+" 金幣");if(s.boss){s.gems+=5;s.boss=false;drop(true)}else if(Math.random()<.14)drop(false);s.hp=Math.min(s.maxHp,s.hp+Math.floor(s.maxHp*.08));spawn()}
+function heroAttack(mult=1){if(!s.enemy)return;let dmg=Math.max(1,Math.floor(totalAtk()*mult*(.85+Math.random()*.3)));if(Math.random()<.12)dmg*=2;s.enemy.hp-=dmg;log("你造成 "+dmg+" 傷害");if(s.enemy.hp<=0)win()}
+function enemyAttack(){if(!s.enemy||s.enemy.hp<=0)return;const dmg=Math.max(1,Math.floor(s.enemy.atk-totalDef()*.55));s.hp-=dmg;log(s.enemy.n+" 對你造成 "+dmg+" 傷害");if(s.hp<=0){s.hp=s.maxHp;s.gold=Math.floor(s.gold*.95);s.boss=false;toast("被擊敗，損失 5% 金幣");spawn()}}
+function equip(id){const i=s.inventory.findIndex(x=>x.id==id);if(i<0)return;const it=s.inventory[i],old=s.equipment[it.slot];s.equipment[it.slot]={...it,level:old?.level||0};s.inventory.splice(i,1);if(old&&!["木劍","布衣"].includes(old.name))s.inventory.push({...old,id:Date.now()+Math.random()});render();save()}
+function upgrade(slot){const it=s.equipment[slot],cost=100*Math.pow((it.level||0)+1,2);if(s.gold<cost)return toast("金幣不足");s.gold-=cost;it.level=(it.level||0)+1;toast("強化成功 +"+it.level);render();save()}
+function potion(){if(s.potions<=0)return toast("沒有藥水");if(s.hp>=s.maxHp)return;s.potions--;s.hp=Math.min(s.maxHp,s.hp+Math.floor(s.maxHp*.5));render()}
+function save(){s.lastSeen=Date.now();localStorage.setItem(KEY,JSON.stringify(s))}
+function load(){try{const raw=localStorage.getItem(KEY);if(raw)s={...s,...JSON.parse(raw)}}catch(e){}spawn()}
+function render(){const c=classes[s.class];$("heroName").textContent=c.name;$("heroPortrait").textContent=c.icon;$("level").textContent=s.level;$("gold").textContent=Math.floor(s.gold).toLocaleString();$("gems").textContent=s.gems;$("hpText").textContent=Math.max(0,Math.floor(s.hp))+" / "+s.maxHp;$("hpBar").style.width=Math.max(0,s.hp/s.maxHp*100)+"%";$("mpText").textContent=s.mp+" / "+s.maxMp;$("mpBar").style.width=s.mp/s.maxMp*100+"%";$("expText").textContent=s.exp+" / "+s.expNeed;$("expBar").style.width=s.exp/s.expNeed*100+"%";$("atk").textContent=totalAtk();$("def").textContent=totalDef();$("hit").textContent=s.hit;$("aspd").textContent=s.aspd.toFixed(2);if(s.enemy){$("enemyName").textContent=s.enemy.n;$("enemyLevel").textContent=s.enemy.level;$("enemyPortrait").textContent=s.enemy.i;$("enemyHpText").textContent=Math.max(0,s.enemy.hp)+" / "+s.enemy.maxHp;$("enemyHpBar").style.width=Math.max(0,s.enemy.hp/s.enemy.maxHp*100)+"%"}const w=s.equipment.weapon,a=s.equipment.armor,r=s.equipment.ring;$("weaponName").textContent=w.name+" +"+(w.level||0);$("armorName").textContent=a.name+" +"+(a.level||0);$("ringName").textContent=r?r.name:"無";$("potions").textContent=s.potions;const inv=$("inventory");inv.innerHTML=s.inventory.length?"":"<small>背包目前是空的</small>";s.inventory.forEach(it=>{const d=document.createElement("div");d.className="item";d.innerHTML="<span><b>"+it.name+"</b><br><small>"+it.r+"</small></span><button>裝備</button>";d.querySelector("button").onclick=()=>equip(it.id);inv.appendChild(d)})}
+maps.forEach((m,i)=>{const o=document.createElement("option");o.value=i;o.textContent=m.name+"（Lv."+m.lv+"）";$("mapSelect").appendChild(o)});
+$("classSelect").onchange=e=>{const c=classes[e.target.value];s.class=e.target.value;s.maxHp=c.hp;s.maxMp=c.mp;s.hp=s.maxHp;s.mp=s.maxMp;s.baseAtk=c.atk;s.baseDef=c.def;s.hit=c.hit;s.aspd=c.aspd;spawn();save()};
+$("mapSelect").onchange=e=>{const i=+e.target.value;if(s.level<maps[i].lv){toast("需要 Lv."+maps[i].lv);e.target.value=s.map;return}s.map=i;s.boss=false;spawn();save()};
+$("bossBtn").onclick=()=>{s.boss=true;spawn();toast("Boss 出現！")};$("upWeapon").onclick=()=>upgrade("weapon");$("upArmor").onclick=()=>upgrade("armor");$("healBtn").onclick=potion;$("saveBtn").onclick=()=>{save();toast("已存檔")};$("buyPotion").onclick=()=>{if(s.gold<50)return toast("金幣不足");s.gold-=50;s.potions++;render();save()};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")});
+load();$("classSelect").value=s.class;$("mapSelect").value=s.map;
+let a=0,e=0,sk=0;setInterval(()=>{a+=.25;e+=.25;sk+=.25;if(a>=1/s.aspd){heroAttack();a=0}if(e>=1.5){enemyAttack();e=0}if(sk>=5){heroAttack(1.8);sk=0}if(s.hp/s.maxHp<.35&&s.potions>0)potion();render()},250);setInterval(save,5000);
+</script></body></html>
